@@ -1,0 +1,13 @@
+#! /bin/sh
+
+
+for i in $*; do
+    if [ -e $i ]; then
+        echo $i exists
+    else
+        git init $i
+        cd $i
+        git commit --allow-empty -m 'Initial commit.'
+        cd -
+    fi
+done
