@@ -1,0 +1,12 @@
+#! /bin/sh
+
+if [ x$1 = x ]
+then
+    number=1
+
+else
+    number=$1
+fi
+echo git reset --soft HEAD~$number
+echo git reset HEAD
+
