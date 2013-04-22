@@ -1,0 +1,65 @@
+#! /bin/sh
+
+max () {
+    one=$1
+    two=$2
+    if [ x$one != x ]; then
+        if [ x$two != x ]; then
+            if [ $one -lt $two ]; then
+                echo $two
+            else
+                echo $one
+            fi
+        else
+            echo $one
+        fi
+    else
+        if [ x$two != x ]; then
+            echo $two
+        else
+            echo 0
+        fi
+    fi
+}
+
+min () {
+    one=$1
+    two=$2
+    if [ x$one != x ]; then
+        if [ x$two != x ]; then
+            if [ $one -lt $two ]; then
+                echo $one
+            else
+                echo $two
+            fi
+        else
+            echo $one
+        fi
+    else
+        if [ x$two != x ]; then
+            echo $two
+        else
+            echo 0
+        fi
+    fi
+}
+
+msg() {
+    git tree | grep $1 | sed -e "s/.*$1 //"
+}
+
+IFS='
+'
+for i in `msg 'fixup!'` `msg 'squash!'`; do
+    val=`git tree | nl | grep "$i" | grep -v 'fixup!' | grep -v 'squash!' | sed -e 's/^ *\([0-9]*\).*/\1/g'`
+    for k in $val; do
+        m=`max $k $m`
+    done
+done
+unpushed=`git unpushed | wc -l`
+m=`min $m $unpushed`
+if [ "x$m" != x0 ]; then
+    git ri HEAD~$m
+else
+    echo Nothing to squash
+fi
