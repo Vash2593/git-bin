@@ -1,0 +1,52 @@
+# -*- mode: Conf -*-
+[user]
+	name = David Moreira
+	email = david.moreira@dataiku.com
+[alias]
+        amend   = commit --amend --no-verify
+        br      = branch
+        brs     = !legit branches
+        c       = check
+        co      = checkout
+        db      = rev-parse --abbrev-ref HEAD
+        d       = diff --patience
+        filestatus = diff --name-status
+        g       = grep --color=always
+        hidden  = "!git ls-files -v | grep ^h | cut -c 3-"
+        hide    = update-index --assume-unchanged
+        index   = diff --cached
+        l       = log --decorate=full --pretty=full --graph -b --stat
+        ours    = "!f() { git commit --ours $@ && git add $@; }; f"
+        rba     = rebase --abort
+        rbc     = rebase --continue
+        rb      = rebase
+        rbs     = rebase --skip
+        ri      = rebase --interactive --autosquash
+        st      = status
+        theirs  = "!f() { git commit --theirs $@ && git add $@; }; f"
+        tree    = log --graph --decorate --pretty=oneline --abbrev-commit
+        undo    = git reset --soft HEAD^
+        unhide  = update-index --no-assume-unchanged
+        up      = update
+        who     = shortlog -sne
+
+[color]
+	ui = true
+[core]
+	excludesfile = /home/dmoreira/.gitignore_global
+
+# Less bullshit
+[advice]
+        pushNonFastForward = false
+        statusHints = false
+        commitBeforeMerge = false
+        resolveConflict = false
+        implicitIdentity = false
+        detachedHead = false
+
+[diff]
+	algorithm = patience
+[branch "master"]
+	rebase = true
+[branch]
+	autosetuprebase = always
