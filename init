@@ -1,0 +1,14 @@
+#! /bin/sh
+
+path=$HOME/.opt/bin/
+
+set -e
+mkdir -p $path || echo $path already exists
+
+for i in git-*; do
+    rm -f $path/$i
+    ln -s `pwd`/$i $path
+done
+
+rm -f $HOME/.gitconfig
+ln -s `pwd`/.gitconfig $HOME/
