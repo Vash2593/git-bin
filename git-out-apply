@@ -1,0 +1,23 @@
+#! /bin/sh
+
+out_repo_path=$1
+shift
+diff=`mktemp /tmp/git-out-apply.XXXX.diff`
+cd $out_repo_path
+cd -
+
+echoEval() {
+    echo $*
+    # eval $*
+}
+
+for i in $*; do
+    git diff $i $i~1 > $diff
+    git log -n1 $i > $msg
+    cd -
+    echoEval git apply $tmp
+    echoEval git commit -t $msg
+    cd -
+done
+
+rm -f $diff $msg
