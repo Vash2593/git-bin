@@ -3,7 +3,7 @@
 path=$HOME/.opt/bin/
 
 set -e
-mkdir -p $path || echo $path already exists
+mkdir -p $path
 
 for i in git-*; do
     rm -f $path/$i
