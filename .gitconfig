@@ -33,9 +33,7 @@
 [color]
    ui = true
 [core]
-   excludesfile = /home/vash/.gitignore_global
-   excludesfile = /home/vash/.gitignore_global
-#   editor = /home/vash/bin/my-emacsclient
+        excludesfile = /home/vash/.gitignore_global
 
 # Less bullshit
 [advice]
