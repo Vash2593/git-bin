@@ -33,7 +33,7 @@
 [color]
 	ui = true
 [core]
-	excludesfile = /home/dmoreira/.gitignore_global
+	excludesfile = /home/vash/.gitignore_global
 
 # Less bullshit
 [advice]
