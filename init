@@ -12,3 +12,4 @@ done
 
 rm -f $HOME/.gitconfig
 ln -s `pwd`/.gitconfig $HOME/
+ln -s `pwd`/.gitignore_global $HOME/
