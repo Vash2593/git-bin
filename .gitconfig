@@ -1,15 +1,15 @@
 # -*- mode: Conf -*-
 [user]
-	name = David Moreira
-	email = david.moreira@dataiku.com
+   name = David Moreira
+   email = david.moreira@dataiku.com
 [alias]
         amend   = commit --amend --no-verify
+        b       = !tig blame
         br      = branch
         brs     = !legit branches
         c       = check
         co      = checkout
         db      = rev-parse --abbrev-ref HEAD
-        d       = diff --patience
         filestatus = diff --name-status
         g       = grep --color=always
         hidden  = "!git ls-files -v | grep ^h | cut -c 3-"
@@ -28,12 +28,14 @@
         undo    = git reset --soft HEAD^
         unhide  = update-index --no-assume-unchanged
         up      = update
+        w       = !git log --pretty=format:"`tput setaf 3`%h%x09`tput setaf 2`%an%x09`tput setaf 6`%s"
         who     = shortlog -sne
-
 [color]
-	ui = true
+   ui = true
 [core]
-	excludesfile = /home/vash/.gitignore_global
+   excludesfile = /home/vash/.gitignore_global
+   excludesfile = /home/vash/.gitignore_global
+#   editor = /home/vash/bin/my-emacsclient
 
 # Less bullshit
 [advice]
@@ -45,8 +47,8 @@
         detachedHead = false
 
 [diff]
-	algorithm = patience
+   algorithm = patience
 [branch "master"]
-	rebase = true
+   rebase = true
 [branch]
-	autosetuprebase = always
+   autosetuprebase = always
