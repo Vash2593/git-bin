@@ -48,7 +48,7 @@ fi
 
 # If there are whitespace errors, print the offending file names and fail.
 debug='System.err.println("debug:'
-if [ x"`git diff --cached | grep $debug | wc -l`" != x0 ]; then
+if [ x"`git diff --cached |grep -vE '^-' | grep $debug | wc -l`" != x0 ]; then
     echo attempt to commit debug
     git diff --cached --no-color | grep -C5 $debug \
         | sed -e "s/\($debug\)/`tput setaf 1`\1`tput setaf 7`/g"
