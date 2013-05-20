@@ -1,15 +1,25 @@
 #! /bin/sh
 
+set -e
+
+autoln () {
+    if [ ! -f "$2/`basename $1`" ]; then
+        echo link
+        ln -s $1 $2
+    fi
+}
+
 path=$HOME/.opt/bin/
 
-set -e
+
 mkdir -p $path
 
 for i in git-*; do
     rm -f $path/$i
-    ln -s `pwd`/$i $path
+    autoln `pwd`/$i $path
 done
 
 rm -f $HOME/.gitconfig
-ln -s `pwd`/.gitconfig $HOME/
-ln -s `pwd`/.gitignore_global $HOME/
+
+autoln "`pwd`/.gitconfig" $HOME/
+autoln "`pwd`/.gitignore_global" $HOME/
