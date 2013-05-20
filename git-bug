@@ -1,0 +1,34 @@
+#! /bin/sh
+
+set -e
+
+usage() {
+    echo "usage $0: git bug [finish] name" 1>&2
+    exit $1
+}
+
+setbugbranch() {
+    [ -z "$1" ] && usage 1
+    bug_branch=bug/$1
+}
+
+
+if [ "x$1" = "xfinish" ]
+then
+    setbugbranch $2
+
+    current_branch=`git current`
+    echo $current_branch $bug_branch
+    if [ "x$current_branch" = "x$bug_branch" ]
+    then
+        echo error: Current branch and bug branch are same, please checkout for a rebase. 1>&2
+        exit 2
+    fi
+
+    git rebase $bug_branch $current_branch
+    git branch -d $bug_branch
+else
+    setbugbranch $1
+
+    git checkout -b $bug_branch
+fi
