@@ -50,3 +50,5 @@
    rebase = true
 [branch]
    autosetuprebase = always
+[hooks]
+   allownonascii = false
