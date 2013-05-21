@@ -1,0 +1,100 @@
+#! /bin/sh
+# Create a commit in the submodule and in the root git
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> submodule_path
+
+Create a commit in the submodule and update the root git.
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+  -n, --no-verify    This option bypasses the pre-commit and commit-msg
+                     hooks. See also githooks(5).
+EOF
+    exit $1
+}
+
+
+commit() {
+
+    submodule="$1"
+    submodule_name=`basename $submodule`
+
+    cd $submodule
+
+    git commit $commit_opt
+    title="`git log -n1 | tail -n+5 | sed -re 's/^ +//'`"
+
+    cd -
+
+    if [ "xtrue" = "x`git dirty-submodule $submodule`" ]; then
+        stash=true
+        cd -
+        git stash
+        cd -
+    else
+        stash=false
+    fi
+
+    git dirty-submodule $submodule
+    git add $submodule
+    # FIXME: Update : $title
+    git commit $commit_opt -m "$(cat <<EOF
+
+
+Update $submodule_name: $title
+
+* $submodule: Here.
+
+EOF
+)"
+
+    if [ "xtrue" = "x$stash" ]; then
+        cd -
+        git stash pop
+        cd -
+    fi
+
+}
+
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (-n|--no-verify)
+            commit_opt="$commit_opt -n"
+            ;;
+        (*)
+            args="$args $opt"
+            ;;
+    esac
+done
+
+if [ "x$1" != "x" ];then
+    commit $args
+else
+    usage 1
+fi
