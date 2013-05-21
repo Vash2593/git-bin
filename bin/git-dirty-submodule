@@ -1,0 +1,9 @@
+#! /bin/sh
+
+for i in $@; do
+    if git diff $1 | tail -n1 | grep 'dirty' > /dev/null; then
+        echo true
+    else
+        echo false
+    fi
+done
