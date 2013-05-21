@@ -14,7 +14,7 @@ path=$HOME/.opt/bin/
 
 mkdir -p $path
 
-for i in git-*; do
+for i in bin/git-*; do
     rm -f $path/$i
     autoln `pwd`/$i $path
 done
