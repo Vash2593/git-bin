@@ -34,7 +34,6 @@ EOF
     exit $1
 }
 
-
 commit() {
 
     submodule="$1"
@@ -47,7 +46,7 @@ commit() {
 
     cd -
 
-    if [ "xtrue" = "x`git dirty-submodule $submodule`" ]; then
+    if [ "xtrue" = "x`git is-dirty-submodule $submodule`" ]; then
         stash=true
         cd -
         git stash
@@ -60,8 +59,6 @@ commit() {
     git add $submodule
     # FIXME: Update : $title
     git commit $commit_opt -m "$(cat <<EOF
-
-
 Update $submodule_name: $title
 
 * $submodule: Here.

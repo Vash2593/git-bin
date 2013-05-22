@@ -1,0 +1,70 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+usage() {
+    cat <<EOF
+usage: $0 <Options> submodule
+
+This command return with exit code \`0' if the path given as argument
+is a dirty submodule. Otherwise return a not null exit code.
+
+This command should be considered as internal command. Otherwise, if
+the path given as arguments is not a submodule, $me return with the
+exit code 1.
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+work() {
+    if git is-submodule "$1"; then
+        if git diff $1 | tail -n1 | grep 'dirty' > /dev/null; then
+            exit 1
+    else
+            exit 0
+    fi
+    else
+        error 2 "$1 is not a submodule."
+    fi
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            if [ "x$arg" = "x" ]; then
+                arg=$opt
+            else
+                error 3 "Only one submodule need to be specify in the argument list."
+            fi
+            ;;
+    esac
+done
+
+if [ "x$arg" = "x" ]; then
+    usage 1
+fi
+
+work "$arg"
