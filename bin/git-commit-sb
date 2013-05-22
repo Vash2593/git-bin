@@ -30,6 +30,8 @@ Create one pretty commit message for each submodule given as argument.
 Options:
 
   -h, --help         Display this message and exit successfully.
+  -n, --no-verify    This option bypasses the pre-commit and
+                     commit-msg hooks. See also githooks(5).
 EOF
     exit $1
 }
@@ -44,11 +46,11 @@ work() {
     fi
     nb_commit=`git submodule summary $submodule | grep -Ev '^\*' | wc -l`
     git add "$submodule"
-    git commit -m "$(cat<<.
-Update $submodule.
+    git commit $commit_opts -m "$(cat<<.
+Update $submodule with $nb_commit commit(s).
 
 With:
-$(git log --pretty=format:"* %h: %s" -n$nb_commit)
+$(cd $submodule && git log --pretty=format:"* %h: %s" -n$nb_commit)
 .
 )"
 }
@@ -58,6 +60,9 @@ do
     case $opt in
         (-h|--help)
             usage 0
+            ;;
+        (-n|--no-verify)
+            commit_opts="$commit_opts -n"
             ;;
         (*)
             args="$args $opt"
