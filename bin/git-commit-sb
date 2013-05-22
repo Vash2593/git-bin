@@ -1,0 +1,75 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> [submodule...]
+
+Commit in the root git, the commit of the submodules given as
+arguments.
+
+Create one pretty commit message for each submodule given as argument.
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+work() {
+    submodule=$1
+    if ! git is-submodule "$submodule"; then
+        error 2 "$submodule is not a submodule"
+    fi
+    if ! git is-dirty-submodule "$submodule"; then
+        error 2 "$submodule is a dirty submodule, you should want to make a \`git stash'."
+    fi
+    nb_commit=`git submodule summary $submodule | grep -Ev '^\*' | wc -l`
+    git add "$submodule"
+    git commit -m "$(cat<<.
+Update $submodule.
+
+With:
+$(git log --pretty=format:"* %h: %s" -n$nb_commit)
+.
+)"
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            args="$args $opt"
+            ;;
+    esac
+done
+
+if [ "x$args" != "x" ]
+then
+    for sb in $args; do
+        work $sb
+    done
+else
+    error 127 "Not implemented"
+fi
