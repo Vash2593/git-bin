@@ -1,0 +1,56 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> [submodule...]
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+work() {
+    git submodule | sed -e 's/^ //'| cut -d' ' -f2 | grep "^$1$" > /dev/null
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            if [ "x$arg" = "x" ]; then
+                arg=$opt
+            else
+                error 3 "Only one submodule need to be specify in the argument list."
+            fi
+            ;;
+    esac
+done
+
+if [ "x$arg" = "x" ]; then
+    usage 1
+fi
+
+work $arg
