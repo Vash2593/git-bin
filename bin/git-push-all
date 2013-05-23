@@ -1,0 +1,60 @@
+#! /bin/sh
+
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> path...
+
+Add each path as submodule.
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+work() {
+    if [ -f .gitmodules ]; then
+        for i in $(grep path .gitmodules | sed -e 's/.* = //'); do
+            echo Entering $i
+            cd $i > /dev/null 2>&1
+            git push-all
+            echo Leaving $i
+            cd - > /dev/null 2>&1
+        done
+    fi
+    git push
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            error 42
+            ;;
+    esac
+done
+
+work
