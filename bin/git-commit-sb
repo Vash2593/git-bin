@@ -22,7 +22,7 @@ usage() {
     cat <<EOF
 usage: $0 <Options> [submodule...]
 
-Commit in the root git, the commit of the submodules given as
+Commit in the root git, the commits of the submodules given as
 arguments.
 
 Create one pretty commit message for each submodule given as argument.
