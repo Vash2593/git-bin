@@ -41,10 +41,7 @@ work() {
     if ! git is-submodule "$submodule"; then
         error 2 "$submodule is not a submodule"
     fi
-    if ! git is-dirty-submodule "$submodule"; then
-        error 2 "$submodule is a dirty submodule, you should want to make a \`git stash'."
-    fi
-    nb_commit=`git submodule summary $submodule | grep -Ev '^\*' | wc -l`
+    nb_commit=$((`git submodule summary $submodule | grep -Ev '^\*' | wc -l` - 1))
     git add "$submodule"
     git commit $commit_opts -m "$(cat<<.
 Update $submodule with $nb_commit commit(s).
