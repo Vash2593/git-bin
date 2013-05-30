@@ -25,7 +25,6 @@
         st      = status
         theirs  = "!f() { git commit --theirs $@ && git add $@; }; f"
         tree    = log --graph --decorate --pretty=oneline --abbrev-commit
-        undo    = git reset --soft HEAD^
         unhide  = update-index --no-assume-unchanged
         up      = update
         w       = !git log --pretty=format:"`tput setaf 3`%h%x09`tput setaf 2`%an%x09`tput setaf 6`%s"
