@@ -21,9 +21,9 @@ error ()
 
 usage() {
     cat <<EOF
-usage: $0 <Options> path...
+usage: $0 <Options>
 
-Add each path as submodule.
+Push all submodule and push the root git.
 
 Options:
 
@@ -33,16 +33,16 @@ EOF
 }
 
 work() {
-    if [ -f .gitmodules ]; then
-        for i in $(grep path .gitmodules | sed -e 's/.* = //'); do
-            echo Entering $i
-            cd $i > /dev/null 2>&1
-            git push-all
-            echo Leaving $i
-            cd - > /dev/null 2>&1
-        done
-    fi
-    git push
+    for i in `git list-sb`
+    do
+        echo Entering $i
+        cd "$i" > /dev/null 2>&1
+        git push-all
+
+        echo Leaving $i
+        cd - > /dev/null
+    done
+    git push origin master
 }
 
 for opt
