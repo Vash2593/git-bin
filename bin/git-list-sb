@@ -1,0 +1,53 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> [submodule...]
+
+List all submodules
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+work() {
+    if ! [ -f .gitmodules ]; then
+        exit
+    fi
+    cat .gitmodules | grep -e "^\[submodule.*" | sed -re 's/\[submodule "(.*)"\]/\1/'
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            error 42 "No arguments needed"
+            ;;
+    esac
+done
+
+work
