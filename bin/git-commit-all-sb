@@ -1,0 +1,59 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> [submodule...]
+
+Commit all submodule using \`git-commit-sb'
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+  -n, --no-verify    This option bypasses the pre-commit and
+                     commit-msg hooks. See also githooks(5).
+EOF
+    exit $1
+}
+
+work() {
+    for i in `git submodule summary | grep -e '^*.*' | cut -d' ' -f2`
+    do
+        echo \* Commit "$i:"
+        git commit-sb $commit_opts "$i" | head -n1
+    done
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (-n|--no-verify)
+            commit_opts="$commit_opts -n"
+            ;;
+        (*)
+            error 42 "No arguments needed"
+            ;;
+    esac
+done
+
+work
