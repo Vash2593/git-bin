@@ -1,0 +1,60 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> add <repository> [<path>]
+
+Commit all submodule using \`git-commit-sb'
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+work_add() {
+    git submodule add $1 $2
+    git commit -n -m "$(cat<<.
+submodule: $(basename $2).
+
+* $2: Add submodule from $1
+.
+)"
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            if [ "x$cmd" = "x" ]; then
+                cmd=$opt
+            else
+                arg="$arg $opt"
+            fi
+            ;;
+    esac
+done
+
+work_$cmd $arg
