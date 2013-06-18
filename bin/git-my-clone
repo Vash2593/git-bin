@@ -1,0 +1,70 @@
+#! /bin/sh
+set -e
+me=`basename $0`
+stderr ()
+{
+  local i
+  for i
+  do
+    echo >&2 "$me: $i"
+  done
+}
+
+error ()
+{
+  local sta=$1
+  shift
+  stderr "$@"
+  exit $sta
+}
+
+usage() {
+    cat <<EOF
+usage: $0 <Options> <address> [<path>]
+
+My clone with submodule initialization.
+
+Options:
+
+  -h, --help         Display this message and exit successfully.
+EOF
+    exit $1
+}
+
+init_submodule() {
+    echo lol: `pwd`
+    git checkout master
+    git submodule init
+    git submodule update
+    for i in `git list-sb`; do
+        cd $i
+        init_submodule
+        cd -
+    done
+}
+
+work() {
+    git clone $@
+    if [ "x$2" != "x" ];then
+        path="$2"
+    else
+        path=`basename "$1"`
+    fi
+
+    cd $2
+    init_submodule
+}
+
+for opt
+do
+    case $opt in
+        (-h|--help)
+            usage 0
+            ;;
+        (*)
+            args="$args $opt"
+            ;;
+    esac
+done
+
+work $args
