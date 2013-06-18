@@ -23,8 +23,8 @@
         rbs     = rebase --skip
         ri      = rebase --interactive --autosquash
         st      = status
+        t   = log --graph --decorate --pretty=oneline --abbrev-commit
         theirs  = "!f() { git commit --theirs $@ && git add $@; }; f"
-        tree    = log --graph --decorate --pretty=oneline --abbrev-commit
         unhide  = update-index --no-assume-unchanged
         up      = update
         w       = !git log --pretty=format:"`tput setaf 3`%h%x09`tput setaf 2`%an%x09`tput setaf 6`%s"
