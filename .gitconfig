@@ -15,7 +15,7 @@
         hidden  = "!git ls-files -v | grep ^h | cut -c 3-"
         hide    = update-index --assume-unchanged
         index   = diff --cached
-        l       = log --decorate=full --pretty=full --graph -b --stat
+        l       = log --decorate=full --pretty=full --graph -b --stat --no-merges
         ours    = "!f() { git commit --ours $@ && git add $@; }; f"
         rba     = rebase --abort
         rbc     = rebase --continue
@@ -23,7 +23,7 @@
         rbs     = rebase --skip
         ri      = rebase --interactive --autosquash
         st      = status
-        t   = log --graph --decorate --pretty=oneline --abbrev-commit
+        t       = log --graph --decorate --pretty=oneline --abbrev-commit --no-merges
         theirs  = "!f() { git commit --theirs $@ && git add $@; }; f"
         unhide  = update-index --no-assume-unchanged
         up      = update
