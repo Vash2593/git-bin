@@ -2,8 +2,12 @@
 
 
 for i in $*; do
-    git init $i
-    cd $i
-    git commit --allow-empty -m 'Initial commit.'
-    cd -
+    if [ -e $i ] && [ -e $1/.git ]; then
+        echo $i exists
+    else
+        git init $i
+        cd $i
+        git commit --allow-empty -m 'Initial commit.'
+        cd - > /dev/null
+    fi
 done
