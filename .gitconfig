@@ -3,13 +3,14 @@
    name = David Moreira
    email = david.moreira@dataiku.com
 [alias]
-        amend   = commit --amend --no-verify
+        amend   = commit --amend --no-verify --no-edit
         b       = !tig blame
         br      = branch
         brs     = !legit branches
         c       = check
         co      = checkout
         db      = rev-parse --abbrev-ref HEAD
+        fi      = "!git commit --fixup "
         filestatus = diff --name-status
         g       = grep --color=always
         hidden  = "!git ls-files -v | grep ^h | cut -c 3-"
@@ -22,6 +23,8 @@
         rb      = rebase
         rbs     = rebase --skip
         ri      = rebase --interactive --autosquash
+        rw      = commit --amend --no-verify
+        sq      = "!git commit --squash "
         st      = status
         t       = log --graph --decorate --pretty=oneline --abbrev-commit --no-merges
         theirs  = "!f() { git commit --theirs $@ && git add $@; }; f"
@@ -51,3 +54,4 @@
    autosetuprebase = always
 [hooks]
    allownonascii = false
+   
