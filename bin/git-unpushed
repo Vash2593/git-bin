@@ -2,4 +2,4 @@
 
 br=`git branch --no-color | grep '^*' | cut -d' ' -f2`
 
-git remote | while read line; do git tree $line/$br..$br; done
+git remote | while read line; do git t $line/$br..$br; done
