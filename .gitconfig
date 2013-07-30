@@ -54,4 +54,3 @@
    autosetuprebase = always
 [hooks]
    allownonascii = false
-   

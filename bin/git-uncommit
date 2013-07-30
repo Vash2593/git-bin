@@ -9,4 +9,3 @@ else
 fi
 git reset --soft HEAD~$number
 git reset HEAD
-
