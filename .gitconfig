@@ -1,7 +1,7 @@
 # -*- mode: Conf -*-
 [user]
    name = David Moreira
-   email = david.moreira@dataiku.com
+   email = david.moreira@scaledrisk.com
 [alias]
         amend   = commit --amend --no-verify --no-edit
         b       = !tig blame
