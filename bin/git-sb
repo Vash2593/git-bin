@@ -32,11 +32,18 @@ EOF
 }
 
 work_add() {
-    git submodule add $1 $2
+    path=$1
+    if [ "x$2" = "x" ]
+    then
+        name=`basename '$path' | sed -er 's#.git$##'`
+    else
+        name="$2"
+    fi
+    git submodule add $path $name
     git commit -n -m "$(cat<<.
-submodule: $(basename $2).
+submodule: $name.
 
-* $2: Add submodule from $1
+* $name: Add submodule from $path
 .
 )"
 }
